@@ -1,3 +1,4 @@
+// jQuery
 $(document).ready(function() {
 
     // Event Listener for Search Button Click, Perform Function
@@ -6,11 +7,11 @@ $(document).ready(function() {
         // Storing Input Field Value
         let cityInput = $("#city-input").val();
 
-        // Clearing Input Field Value
-        $("#city-input").val("");
-
         // Call Search Function (cityInput)
         weatherSearch(cityInput);
+
+        // Clearing Input Field Value
+        $("#city-input").val("");
 
     });
 
@@ -18,7 +19,7 @@ $(document).ready(function() {
     let apiKey = "01b3cd1976a0c8efe2a1cf86798399b9";
 
     // Query URL url + cityInput + api key + Imperial (U.S.) Units
-    let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityInput + "&appid=" + apiKey + "&units=imperial";
+    let queryURL = ("https://api.openweathermap.org/data/2.5/weather?q=" + cityInput + "&appid=" + apiKey + "&units=imperial");
 
     // Declaring the Weather Search Function, Passing in cityInput
     function weatherSearch(cityInput) {
@@ -47,47 +48,67 @@ $(document).ready(function() {
                 // Set stringified History into Local Storage
                 localStorage.setItem("history", JSON.stringify(history));
 
-                // Setting Variable for Latitude from Response
-                let lat = response.coord.lat.val();
-
-                // Setting Variable for Longitude from Response
-                let lon = response.coord.lon.val();
-
-                // Setting Variable for Forecast URL
-                let forecastURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
-
-                // Ajax Request for Five Day Forecast
-                $.ajax({
-
-                    // Query URL
-                    url: forecastURL,
-
-                    // Getting Response
-                    method: "GET",
-
-                    // Making sure to grab only if JSON
-                    dataType: "json"
-
-                // then Pass Response into Function
-                }).then(function(response) {
-
-                    console.log(response);
-
-                    // Loop through Forecast Objects Starting at index of 1 (if Today is Index 0, Tomorrow is Index 1)
-                    // for (let i = 1; i < 6; i++) {
-
-                    //     // Create Cards for Each Forecast Index from 1 to 6
-
-
-                    // }
-
-                });
-
-
                 // Call Function to Populate Button Row
 
 
             }
+
+            // Setting Variable for Latitude from Response
+            let lat = response.coord.lat.val();
+
+            // Setting Variable for Longitude from Response
+            let lon = response.coord.lon.val();
+
+            // Setting Variable for Forecast URL
+            let forecastURL = ("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&units=imperial");
+
+            // Ajax Request for Five Day Forecast
+            $.ajax({
+
+                // Query URL
+                url: forecastURL,
+
+                // Getting Response
+                method: "GET",
+
+                // Making sure to grab only if JSON
+                dataType: "json"
+
+            // then Pass Response into Function
+            }).then(function(response) {
+
+                console.log(response);
+
+                // Loop through Forecast Objects Starting at index of 1 (if Today is Index 0, Tomorrow is Index 1)
+                // for (let i = 1; i < 6; i++) {
+
+                    // Create Cards for Each Forecast Index from 1 to 6
+                 
+
+                    // Adding Classes for Styling
+                    // card h-100
+
+                    // <div class="card-deck">
+                     //     <div class="card">
+                     //         <img src="..." class="card-img-top" alt="...">
+                     //         <div class="card-body">
+                     //         <h5 class="card-title">Card title</h5>
+                     //         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                     //         </div>
+                     //         <div class="card-footer">
+                     //         <small class="text-muted">Last updated 3 mins ago</small>
+                     //         </div>
+                     //     </div>
+
+                     // Append to Forecast Container Div in HTML
+                     // $("#forecast-container").append();
+
+
+
+
+                 // }
+
+            });
 
             // Testing Response
             console.log(response);
