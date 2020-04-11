@@ -1,0 +1,17 @@
+*, *::before, *::after {
+
+    box-sizing: border-box;
+
+}
+
+body {
+
+    margin: 10px 10px;
+
+}
+
+.container {
+
+    margin: 10px 0px;
+
+}
