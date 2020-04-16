@@ -1,11 +1,13 @@
-// jQuery
+    // jQuery
 $(document).ready(function() {
+
+    // Storing Input Field Value
+    let cityInput = "";
 
     // Event Listener for Search Button Click, Perform Function
     $("#search-button").on("click", function() {
 
-        // Storing Input Field Value
-        let cityInput = $("#city-input").val();
+        cityInput = $("#city-input").val();
 
         // Call Search Function (cityInput)
         weatherSearch(cityInput);
@@ -16,13 +18,13 @@ $(document).ready(function() {
     });
 
     // Setting a Variable for the API Key
-    let apiKey = "01b3cd1976a0c8efe2a1cf86798399b9";
-
-    // Query URL url + cityInput + api key + Imperial (U.S.) Units
-    let queryURL = ("https://api.openweathermap.org/data/2.5/weather?q=" + cityInput + "&appid=" + apiKey + "&units=imperial");
+    let apiKey = "add15ec289ce19d31c31427412e25484";
 
     // Declaring the Weather Search Function, Passing in cityInput
     function weatherSearch(cityInput) {
+
+        // Query URL url + cityInput + api key + Imperial (U.S.) Units
+        let queryURL = ("https://api.openweathermap.org/data/2.5/weather?q=" + cityInput + "&appid=" + apiKey + "&units=imperial");
 
         // AJAX request
         $.ajax({
@@ -54,10 +56,10 @@ $(document).ready(function() {
             }
 
             // Setting Variable for Latitude from Response
-            let lat = response.coord.lat.val();
+            let lat = response.coord.lat;
 
             // Setting Variable for Longitude from Response
-            let lon = response.coord.lon.val();
+            let lon = response.coord.lon;
 
             // Setting Variable for Forecast URL
             let forecastURL = ("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&units=imperial");
@@ -77,36 +79,66 @@ $(document).ready(function() {
             // then Pass Response into Function
             }).then(function(response) {
 
+                // USing Console to Test Response
                 console.log(response);
 
                 // Loop through Forecast Objects Starting at index of 1 (if Today is Index 0, Tomorrow is Index 1)
-                // for (let i = 1; i < 6; i++) {
+                for (let i = 1; i < 6; i++) {
 
-                    // Create Cards for Each Forecast Index from 1 to 6
-                 
+                    // Create a Card for Each Forecast Index from 1 to 6
 
-                    // Adding Classes for Styling
-                    // card h-100
+                    // Setting Variable to New Card Deck Div
+                    let forecastCardDeck = $("<div>").addClass("card-deck");
 
-                    // <div class="card-deck">
-                     //     <div class="card">
-                     //         <img src="..." class="card-img-top" alt="...">
-                     //         <div class="card-body">
-                     //         <h5 class="card-title">Card title</h5>
-                     //         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                     //         </div>
-                     //         <div class="card-footer">
-                     //         <small class="text-muted">Last updated 3 mins ago</small>
-                     //         </div>
-                     //     </div>
+                    // Setting Variable to New Card Div with Height Class
+                    let forecastCard = $("<div>").addClass("card h-100 bg-primary text-white mr-4");
 
-                     // Append to Forecast Container Div in HTML
-                     // $("#forecast-container").append();
+                    // Setting Variable to New Image with Source and Alt Attributes and Bootstrap Class of Card Image
+                    let forecastImage = $("<img>").attr("src", "http://openweathermap.org/img/w/" + response.daily[i].weather[0].icon + ".png").addClass("card-img-top");
 
+                    // *** Conditional for Image Alt Value
+                    // if (forecastImage.attr("src") === "https://openweathermap.org/img/w/10d.png") {
 
+                    //     // 
+                    //     forecastImage.attr("alt", "Partly Sunny with a Chance of Showers");
 
+                    // }
 
-                 // }
+                    // Setting Image Height and Width
+                    forecastImage.css("height", "150px");
+                    forecastImage.css("width", "150px");
+
+                    // Setting Variable to New Card Body Div
+                    let forecastCardBody = $("<div>").addClass("card-body");
+
+                    // Setting Variable to New Card Title
+                    let forecastCardTitle = $("<h5>").addClass("card-title");
+
+                    // Setting Forecast Card Date in Title Text
+                    // forecastCardTitle.text("");
+
+                    // New Paragraph for Forecast Card Wind Speed
+                    let forecastWind = $("<p>").addClass("card-text").text("Wind Speed: " + response.daily[i].wind_speed + " MPH");
+
+                    // New Paragraph for Forecast Card Humidity
+                    let forecastHumidity = $("<p>").addClass("card-text").text("Humidity: " + response.daily[i].humidity + "%");
+
+                    // New Paragraph for Forecast Card Temperature
+                    let forecastTemperature = $("<p>").addClass("card-text").text("Temperature: " + response.daily[i].temp.day + "°");
+
+                    // Appending Forecast Details to Forecast Card Body
+                    forecastCardBody.append(forecastWind, forecastHumidity, forecastTemperature);
+
+                    // Appending Image, Title and Body to Forecast Card
+                    forecastCard.append(forecastImage, forecastCardTitle, forecastCardBody);
+
+                    // Appending Forecast Card to Forecast Card Deck
+                    forecastCardDeck.append(forecastCard);
+
+                    // Appending Forecast Card Deck to Forecast Container Div
+                    $("#forecast-container").append(forecastCardDeck);
+                    
+                }
 
             });
 
@@ -149,14 +181,23 @@ $(document).ready(function() {
             // Appending the Card to the Main Card in HTML
             $("#main-card").append(card);
 
-            // Call 5 Day Forecast Function and UV Index Function
+            // Call UV Index Function
 
 
         });
 
+        
+
+        // UV Index Function
+        // function uvIndex() {
+
+        //     if ()
+
+        // }
+
     }
 
-    // 
+    // Setting Variable to Local Storage History 
     let history = JSON.parse(window.localStorage.getItem("history")) || [];
 
     // if statement () to check if history is greater than zero
@@ -166,3 +207,5 @@ $(document).ready(function() {
     
 
 });
+
+// $.getJSON({}) to force grabbing JSON object
