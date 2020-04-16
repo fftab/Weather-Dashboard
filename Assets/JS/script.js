@@ -7,6 +7,7 @@ $(document).ready(function() {
     // Event Listener for Search Button Click, Perform Function
     $("#search-button").on("click", function() {
 
+        //
         cityInput = $("#city-input").val();
 
         // Call Search Function (cityInput)
@@ -51,7 +52,35 @@ $(document).ready(function() {
                 localStorage.setItem("history", JSON.stringify(history));
 
                 // Call Function to Populate Button Row
+                popButtons();
 
+            }
+
+            function popButtons() {
+
+                for ( let i = 0; i < history.length; i++) {
+
+                    
+                    console.log(history);
+
+                    console.log(history[i]);
+
+                    // Setting Variable to New HTML Button 
+                    let cityButton = $("<button>");
+
+                    // Setting Class to New HTML Button
+                    cityButton.addClass("btn btn-primary text-white");
+
+                    cityButton.text(history[i]);
+
+                    cityButton.attr("data-city", history[i]);
+
+                    // Appending City Buttons to City Weather Button Div
+                    $("#city-weather-buttons").append(cityButton);
+
+                    
+
+                }
 
             }
 
@@ -82,10 +111,11 @@ $(document).ready(function() {
                 // USing Console to Test Response
                 console.log(response);
 
+                // Clearing the HTML Before Appending
+                $("#forecast-container").html("");
+
                 // Loop through Forecast Objects Starting at index of 1 (if Today is Index 0, Tomorrow is Index 1)
                 for (let i = 1; i < 6; i++) {
-
-                    // Create a Card for Each Forecast Index from 1 to 6
 
                     // Setting Variable to New Card Deck Div
                     let forecastCardDeck = $("<div>").addClass("card-deck");
