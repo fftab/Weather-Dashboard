@@ -52,38 +52,11 @@ $(document).ready(function() {
                 localStorage.setItem("history", JSON.stringify(history));
 
                 // Call Function to Populate Button Row
-                popButtons();
+                popButtons(cityInput);
 
             }
 
-            function popButtons() {
-
-                for ( let i = 0; i < history.length; i++) {
-
-                    
-                    console.log(history);
-
-                    console.log(history[i]);
-
-                    // Setting Variable to New HTML Button 
-                    let cityButton = $("<button>");
-
-                    // Setting Class to New HTML Button
-                    cityButton.addClass("btn btn-primary text-white");
-
-                    cityButton.text(history[i]);
-
-                    cityButton.attr("data-city", history[i]);
-
-                    // Appending City Buttons to City Weather Button Div
-                    $("#city-weather-buttons").append(cityButton);
-
-                    
-
-                }
-
-            }
-
+            
             // Setting Variable for Latitude from Response
             let lat = response.coord.lat;
 
@@ -108,8 +81,15 @@ $(document).ready(function() {
             // then Pass Response into Function
             }).then(function(response) {
 
-                // USing Console to Test Response
+                // Using Console to Test Response
                 console.log(response);
+
+                // Logging UV Index to Console
+                console.log(response.current.uvi);
+
+                let indexUV = response.current.uvi;
+
+                uvIndex(indexUV, card);
 
                 // Clearing the HTML Before Appending
                 $("#forecast-container").html("");
@@ -216,26 +196,99 @@ $(document).ready(function() {
 
         });
 
-        
+    }
 
-        // UV Index Function
-        // function uvIndex() {
+    function popButtons(text) {
 
-        //     if ()
+        var button = $("<button>").addClass("btn btn-primary history").text(text);
 
-        // }
+        $("#city-weather-buttons").append(button);
+
 
     }
 
     // Setting Variable to Local Storage History 
     let history = JSON.parse(window.localStorage.getItem("history")) || [];
 
-    // if statement () to check if history is greater than zero
-        // if true weatherSearch(history[history.length-1]); // like break case in for loop
+    if (history.length > 0) {
+
+        weatherSearch(history[history.length-1]);
+
+    }
     
-    // for loop run through history arraty to populate city buttons
+    // for loop run through history array to populate city buttons
+
+    for ( let i = 0; i < history.length; i++) {
+
+        popButtons(history[i]);
+
+    }
     
+
+    $(".history").on("click", function() {
+
+        weatherSearch($(this).text());
+
+    });
+
+    // UV Index Function
+    function uvIndex(indexUV, card) {
+
+        let uvButton = $("<button>").addClass("card-text btn").text(indexUV);
+
+        uvButton.attr("id", "ultra-violet-index");
+
+        let uvLabel = $("<label>").addClass("card-text").attr("for", "ultra-violet-index").text("UV Index: ");
+
+        if (indexUV < 2) {
+
+            uvButton.addClass("btn-success");
+
+        }
+        else if (indexUV < 5) {
+
+            uvButton.addClass("btn-warning");
+
+        }
+        else {
+
+            uvButton.addClass("btn-danger");
+
+        }
+
+        card.append(uvLabel, uvButton);
+
+    }
+
 
 });
 
 // $.getJSON({}) to force grabbing JSON object
+
+
+        // for ( let i = 0; i < history.length; i++) {
+
+                
+        //     console.log(history);
+
+        //     console.log(history[i]);
+
+        //     // Setting Variable to New HTML Button 
+        //     let cityButton = $("<button>");
+
+        //     // Setting Class to New HTML Button
+        //     cityButton.addClass("btn btn-primary text-white");
+
+        //     cityButton.text(history[i]);
+
+        //     cityButton.attr("data-city", history[i]);
+
+        //     // Appending City Buttons to City Weather Button Div
+        //     $("#city-weather-buttons").append(cityButton);
+
+        // button.attr("data-city", history[history.length-1]);
+
+        // }
+
+          // if statement () to check if history is greater than zero
+        // if true weatherSearch(history[history.length-1]); // like break case in for loop
